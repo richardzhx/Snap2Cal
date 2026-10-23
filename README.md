@@ -4,9 +4,18 @@
 
 不用在聊天记录和日历之间来回复制。把通知截下来，交给快捷指令识别，再挑选需要的事项，确认标题和时间后保存。
 
-![Snap2Cal 流程演示：截下通知、选择事项、确认后存入日历](docs/images/overview.png)
+**接入 DeepSeek 官方 API，单次识别费用约 0.5 分钱（¥0.005）。** 这是使用者提供的日常使用费用参考，不是固定单价；实际费用取决于截图内容、输入输出 Token 用量、所选模型和调用时段，以账户账单及 [DeepSeek 官方价格](https://api-docs.deepseek.com/zh-cn/quick_start/pricing/)为准。
 
-> 上图是使用虚构通知制作的演示样机，便于说明流程，并非真机运行截图。实际界面随 iOS 版本和日历账户有所不同。
+![Snap2Cal 真机使用流程：勾选识别结果、编辑日程、在日历查看保存结果](docs/images/overview.png)
+
+> 上图使用实际 iPhone 截图制作，展示的是虚构测试事项。截图来自测试过程，部分提示文案早于当前公开版；其中「提前2小时」是自定义配置，v1.4.0 默认提前1小时。原始界面与文字均予以保留。
+
+三张真机原图：
+
+| 勾选识别结果 | 编辑日程 | 保存后的日历 |
+| --- | --- | --- |
+| <img src="docs/images/select-events.png" width="260" alt="真机截图：选择识别出的三条事项"> | <img src="docs/images/edit-event.png" width="260" alt="真机截图：修改标题、日期、时间和提醒"> | <img src="docs/images/saved-event.png" width="260" alt="真机截图：日程已经保存至日历"> |
+
 
 ## 下载与安装
 
@@ -81,6 +90,21 @@
 | [有一条没写时间](tests/fixtures/02-missing-time.png) | 不应把另一条通知的会议时间套过来；没写时间的事项应由你补充。 |
 | [跨年、闰日与错误日期](tests/fixtures/03-calendar-boundaries.png) | 保留明确年份；错误日期不得作为确定时间直接使用，应人工核对。 |
 
+三张图直接预览如下。可长按保存图片；需要原始尺寸时，也可以点击图片打开。
+
+<table>
+  <tr>
+    <th>三条独立通知</th>
+    <th>有一条没写时间</th>
+    <th>跨年、闰日与错误日期</th>
+  </tr>
+  <tr>
+    <td><img src="tests/fixtures/01-multiple-notices.png" width="260" alt="测试截图：包含截止、会议和读书分享三条通知"></td>
+    <td><img src="tests/fixtures/02-missing-time.png" width="260" alt="测试截图：材料提交没有写时间，会议有明确时间"></td>
+    <td><img src="tests/fixtures/03-calendar-boundaries.png" width="260" alt="测试截图：跨年、闰日和2月30日错误日期"></td>
+  </tr>
+</table>
+
 这些图片不是识别准确率或通知送达的测试证据。模型输出有随机性，请始终检查保存页。
 
 ## 你的数据会去哪里
@@ -123,7 +147,8 @@ shortcuts sign --mode anyone \
 - `tools/build_shortcut.py`：原生动作与模型提示，构建时不嵌入个人配置。
 - `tools/validate_shortcut.py`：结构、引用、配置项和请求编码检查。
 - `tools/check_event_flow.py`：使用固定模型结果模拟最终创建流程，**不代替 iPhone 真机测试**。
-- `tools/build_demo.cjs`：演示样机与虚构测试图的可复现生成脚本；需要 Playwright 和本地 Chrome。
+- `tools/build_demo.cjs`：生成虚构通知测试图；需要 Playwright 和本地 Chrome。
+- `tools/build_showcase.cjs`：将三张原始真机截图排版成展示样机，保留截图原始内容。
 - [发布说明](CHANGELOG.md) / [验证范围](docs/TESTING.md)。
 
 使用中遇到问题，可以开 Issue，描述 iOS 版本、触发步骤和实际提示。截图前请遮住密钥与私人信息。
